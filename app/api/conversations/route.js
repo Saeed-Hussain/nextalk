@@ -88,9 +88,7 @@ export async function POST(request) {
     // (e.g. a thrown error, a bad query building step) so they don't just
     // silently show as an unlogged 500.
     console.error("app/api/conversations/route.js POST (uncaught):", err);
-    return respond(500, "Internal Server error", {
-      debug: err?.message || String(err),
-    });
+    return respond(500, "Internal Server error");
   }
 }
 
@@ -146,7 +144,7 @@ async function handlePost(supabase, user, body) {
       .single();
     if (convError) {
       console.error("app/api/conversations/route.js:", convError, "attempted created_by:", user.id);
-      return respond(500, "Internal Server error", { debug: convError.message, attempted_created_by: user.id });
+      return respond(500, "Internal Server error");
     }
 
     const { error: membersError } = await supabase.from("conversation_members").insert([
